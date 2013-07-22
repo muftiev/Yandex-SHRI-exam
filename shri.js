@@ -15,6 +15,19 @@ jQuery.fn.yandex_galery = function() {
     var upd = checkURL();    
     getPhotos(url, true);
 
+    $(".list-photo-XXS").mousewheel(function(event, delta) {
+        var position = parseInt($(this).css("left"));
+        var width = parseInt($(this).outerWidth()) - parseInt($(this).parent().outerWidth());
+        var slide = 500;
+        if(position+slide*delta>0) slide = 0-position;
+        if(position+slide*delta<-width) slide = width+position;
+        if((position+slide*delta*2<-width) && (position+slide*delta>-width)) {
+            var next = $(this).children().last().find("img").attr("data-next");
+            if(next!=="undefined") getPhotos(next, false);
+        }
+        $(this).stop().animate({"left" : position+slide*delta}, 500);
+    }); 
+
 };
 
 function getPhotos(url, first){
