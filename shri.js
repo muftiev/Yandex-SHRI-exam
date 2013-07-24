@@ -32,7 +32,24 @@ jQuery.fn.yandex_galery = function() {
         var direction = scrollgallery(this);
         var url = $(this).find("img").attr("data-l-src");
         var alt = $(this).find("img").attr("alt");
+        togglenavigation(true);
         showPhoto(url, alt, direction);        
+    });
+
+    $(document).on("click", ".nav-right", function(){
+        $(".galery-wrapper li.active").next().click();
+    });
+
+    $(document).on("click", ".nav-left", function(){
+        $(".galery-wrapper li.active").prev().click();
+    });
+
+    $(document).on("mouseenter", window, function(){
+        togglenavigation(true);
+    });
+
+    $(document).on("mouseleave", window, function(){
+        togglenavigation(false);
     });
 
 };
@@ -133,5 +150,16 @@ function scrollgallery(active) {
     else if(slide<ul_width-wrapper_width) $(".list-photo-XXS").animate({"left" : 0}, 500);
     else $(".list-photo-XXS").animate({"left" : -(ul_width-wrapper_width)}, 500);
 
-    return (prev_index>0) ? index-prev_index : 0;
+    return (prev_index>=0) ? index-prev_index : 0;
+}
+
+function togglenavigation(show) {
+    var active = $(".galery-wrapper li.active");
+    if(show) {
+        active.prev().is(".list-item") ? $(".nav-left").removeClass("hidden") : $(".nav-left").addClass("hidden");
+        active.next().is(".list-item") ? $(".nav-right").removeClass("hidden") : $(".nav-right").addClass("hidden");
+    } else {
+        $(".nav-left").addClass("hidden");
+        $(".nav-right").addClass("hidden");
+    }
 }

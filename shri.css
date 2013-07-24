@@ -81,3 +81,32 @@ body{
 	left: -500px;
 	right: auto;
 }
+.nav {
+	width: 75px;
+	height: 75px;
+	margin: auto;
+	border: none;
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	cursor: pointer;
+	-webkit-transition: all 0.5s ease;
+	-moz-transition: all 0.5s ease;
+	transition: all 0.5s ease;
+}
+.nav-left {	
+	background: url(images/arrow.png) no-repeat;
+	-webkit-transform: rotate(180deg);
+    -moz-transform: rotate(180deg);
+    -ms-transform: rotate(180deg);
+    -o-transform: rotate(180deg);
+    transform: rotate(180deg);
+	left: 5%;
+}
+.nav-right {
+	background: url(images/arrow.png) no-repeat;
+	right: 5%;
+}
+.hidden {
+	opacity: 0;
+}
