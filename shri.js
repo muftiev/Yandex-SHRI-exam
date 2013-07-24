@@ -28,6 +28,11 @@ jQuery.fn.yandex_galery = function() {
         $(this).stop().animate({"left" : position+slide*delta}, 500);
     }); 
 
+    $(document).on("click", ".list-item", function(){
+        var direction = scrollgallery(this);
+                
+    });
+
 };
 
 function getPhotos(url, first){
@@ -65,4 +70,21 @@ function checkURL() {
     upd = (upd.indexOf("&")>0) ? upd.slice(0, upd.indexOf("&")) : upd;
 
     return upd;
+}
+
+function scrollgallery(active) {
+    var prev_elem = $(".list-photo-XXS").find(".active");
+    prev_elem.removeClass("active");
+    var prev_index = $(".list-photo-XXS .list-item").index(prev_elem);
+    $(active).addClass("active");
+    var index = $(".list-photo-XXS .list-item").index(active);
+    var li_width = $(".list-item").outerWidth()+parseInt($(".list-item").css("margin-left"))+parseInt($(".list-item").css("margin-right"));
+    var ul_width = $(".list-photo-XXS li").size() * li_width;
+    var wrapper_width = $(".list-photo-XXS").parent().outerWidth();
+    var slide = Math.round((index+1)*li_width-wrapper_width/2-li_width/2);
+    if(slide>0 && slide<ul_width-wrapper_width) $(".list-photo-XXS").animate({"left" : -slide}, 500);
+    else if(slide<ul_width-wrapper_width) $(".list-photo-XXS").animate({"left" : 0}, 500);
+    else $(".list-photo-XXS").animate({"left" : -(ul_width-wrapper_width)}, 500);
+
+    return (prev_index>0) ? index-prev_index : 0;
 }
