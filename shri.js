@@ -30,7 +30,9 @@ jQuery.fn.yandex_galery = function() {
 
     $(document).on("click", ".list-item", function(){
         var direction = scrollgallery(this);
-                
+        var url = $(this).find("img").attr("data-l-src");
+        var alt = $(this).find("img").attr("alt");
+        showPhoto(url, alt, direction);        
     });
 
 };
@@ -61,6 +63,51 @@ function getPhotos(url, first){
                 curphoto.click();
             }
         }
+    });
+}
+
+function showPhoto(url, alt, direction) {
+    var target = $(".active-img");
+    if(!direction) {
+        $(".large-img-view").html('<img class="slide-img active-img" src="'+url+'" alt="'+alt+'" />');
+    } else if(direction>0) {
+        $(".large-img-view").append('<img class="slide-img next-img" src="'+url+'" alt="'+alt+'" />');
+        $(".next-img").on("load", function() {
+            target.animate({"left" : -500}, 100, function(){
+                target.removeClass("active-img");
+                target.addClass("prev-img");
+                target.remove();
+            });    
+            var current = $(".next-img");
+            var slide = (window.outerWidth-current.outerWidth())/2;
+            current.animate({"right" : slide}, 100, function(){
+                current.removeClass("next-img");
+                current.css("right", "");
+                current.addClass("active-img");
+                target.remove();
+            });            
+        });        
+    } else {
+        $(".large-img-view").prepend('<img class="slide-img prev-img" src="'+url+'" alt="'+alt+'" />');
+         $(".prev-img").on("load", function() {
+            target.animate({"right" : -500}, 100, function(){
+                target.removeClass("active-img");
+                target.addClass("next-img");
+                target.remove();
+            });            
+            var current = $(".prev-img");
+            var slide = (window.outerWidth-current.outerWidth())/2;
+            current.animate({"left" : slide}, 100, function(){
+                current.removeClass("prev-img");
+                current.css("left", "");
+                current.addClass("active-img");                
+            });            
+        }); 
+    }
+    $(".slide-img").on("load", function(){
+        var width = $(this).outerWidth();
+        var height = $(this).outerHeight();
+        $(this).css({"max-width":width+"px", "max-height":height+"px", "height":"100%"});
     });
 }
 
